@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 21:02:56 by louismdv          #+#    #+#             */
-/*   Updated: 2024/05/06 13:05:55 by louismdv         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:34:51 by lmerveil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	init_input(t_table *table, char **av)
 	table->time_to_die = ft_atoi(av[2]);
 	table->time_to_eat = ft_atoi(av[3]);
 	table->time_to_sleep = ft_atoi(av[4]);
-	table->start_time = get_current_time();  //time started the program
+	table->start_time = get_current_time();			//time started the program
 	table->num_of_philos = ft_atoi(av[1]);
 	if (av[5])
 		table->num_times_to_eat = ft_atoi(av[5]);
@@ -34,14 +34,14 @@ void	init_philos(t_philo *philos, t_data *data, pthread_mutex_t *forks, char **a
 	i = 1;
 	while (i <= ft_atoi(av[1]))
 	{
-		philos[i].id = i;   //philo number
-		philos[i].eating = 0;   //eating status. 1 if eating
-		philos[i].meals_eaten = 0; //eaten meals
-		philos[i].last_meal = get_current_time();   //time ate last meal
-		philos[i].write_lock = &data->write_lock;  //stdout writing lock
+		philos[i].id = i;							//philo number
+		philos[i].eating = 0;						//eating status. 1 if eating
+		philos[i].meals_eaten = 0; 					//eaten meals
+		philos[i].last_meal = get_current_time();	//time ate last meal
+		philos[i].write_lock = &data->write_lock;	//stdout writing lock
 		philos[i].dead_lock = &data->dead_lock;
-		philos[i].meal_lock = &data->meal_lock;    //philo eating
-		philos[i].dead = &data->dead_flag;         //1 philo dead flag
+		philos[i].meal_lock = &data->meal_lock;		//philo eating
+		philos[i].end = &data->diner_end_flag;
 		philos[i].l_fork = &forks[i];
 		if (i == 0)
 			philos[i].r_fork = &forks[(data->table.num_of_philos) - 1];
@@ -51,10 +51,6 @@ void	init_philos(t_philo *philos, t_data *data, pthread_mutex_t *forks, char **a
 		i++;
 	}
 }
-//fork is a tab with as many forks as there are philosophers.
-//     -> l_fork mutex points to left-hand fork mutex index
-//     -> r_fork mutex points to right-hand fork mutex index
-
 
 // Initializing the forks mutexes
 void	init_forks(pthread_mutex_t *forks, int philo_num)
@@ -72,8 +68,8 @@ void	init_forks(pthread_mutex_t *forks, int philo_num)
 // Initializing the PROGRAM structure
 void	init_program(t_table table, t_data *data, t_philo *philos)
 {
-	data->dead_flag = 0;     //flag to use in case a philo dies
-	data->philos = philos;   //pointer to the whole philos struct. Enabling access to indiv level data
+	data->diner_end_flag = false;		//flag to use in case a philo dies / all philos are full
+	data->philos = philos;			//pointer to the whole philos struct. Enabling access to indiv level data
 	data->table = table;
 	pthread_mutex_init(&data->write_lock, NULL); //init write mutex
 	pthread_mutex_init(&data->dead_lock, NULL);

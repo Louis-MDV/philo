@@ -3,42 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 23:20:09 by louismdv          #+#    #+#             */
-/*   Updated: 2024/05/06 13:51:19 by louismdv         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:04:24 by lmerveil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-
-int create_threads(t_data *data)
+int	create_threads(t_data *data)
 {
-    int i;
-    pthread_t   monitoring;
-    
-    if (pthread_create(&monitoring, NULL, &end_monitoring, &data) != 0)
-        return(printf("pthread create error!"), 1);
-    i = 1;
-    while (i <= data->table.num_of_philos) 
-    {
-        if (pthread_create(&data->philos[i].thread, NULL, &routine, &data->philos[i]) != 0)
-            return (printf("pthread_create error"), 1);
-        i++;
-    }
-    i = 0;
-    if(pthread_join(monitoring, NULL) != 0)
-        destroy_threads(data);
-    //join and destroy created threads
+	int			i;
+	pthread_t	monitoring;
+
+	if (pthread_create(&monitoring, NULL, &end_monitoring, &data) != 0)
+		return (printf("pthread create error!"), EXIT_FAILURE);
+	i = 1;
+	while (i <= data->table.num_of_philos)
+	{
+		if (pthread_create(&data->philos[i].thread, NULL, &routine, &data->philos[i]) != 0)
+			return (printf("pthread_create error!"), EXIT_FAILURE);
+		i++;
+	}
+	join_philo_threads(data, monitoring);
+	return (0);
 }
 
-void    destroy_threads(t_data *data)
+void	join_philo_threads(t_data *data, pthread_t monitoring)
 {
-    pthread_mutex_destroy(&data->dead_lock);
-    pthread_mutex_destroy(&data->meal_lock);
-    pthread_mutex_destroy(&data->write_lock);
-    
-    pthread_mutex_destroy(&data->philo.l_fork);
-    
+	int i;
+	
+	if (pthread_join(monitoring, NULL) != 0)
+		destroy_threads(data);
+	i = 1;
+	while (&data->philos[i])
+	{
+		if (pthread_join(data->philos[i].thread, NULL) != 0)
+			destroy_threads(data);
+		i++;
+	}
+	destroy_threads(data);
+	return ;
+}
+
+void	destroy_threads(t_data *data)
+{
+	int	i;
+
+	pthread_mutex_destroy(&data->dead_lock);
+	pthread_mutex_destroy(&data->meal_lock);
+	pthread_mutex_destroy(&data->write_lock);
+
+	i = 1;
+	while (i <= data->table.num_of_philos)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		i++;
+	}
 }

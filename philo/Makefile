@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+         #
+#    By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/23 13:23:42 by lmerveil          #+#    #+#              #
-#    Updated: 2024/05/06 13:12:06 by louismdv         ###   ########.fr        #
+#    Updated: 2024/05/06 19:15:12 by lmerveil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= 	philo
 
 CC 			= 	cc
-CFLAGS 		= 	-Wall -Wextra -Werror -g -pthread
+CFLAGS 		= 	-Wall -Wextra -Werror -g3 -pthread
 
 RED			= 	$(shell tput setaf 1)
 GREEN		= 	$(shell tput setaf 2)
@@ -34,7 +34,7 @@ SRCS		 = 	$(addsuffix .c,				\
 OFILES		= 	$(SRCS:.c=.o)
 
 .c.o:
-	@$(CC) $( ) -c $< -o $@ 
+	@$(CC) $(CFLAGS) -c $< -o $@ 
 	@echo "$(GREEN)[$(CC)]$(NC) compilation: $(YELLOW)$<$(NC)\r\c"
 
 all: 	$(NAME)

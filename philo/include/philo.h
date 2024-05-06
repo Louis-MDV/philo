@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:23:48 by lmerveil          #+#    #+#             */
-/*   Updated: 2024/05/06 13:52:30 by louismdv         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:07:44 by lmerveil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,6 @@
 
 typedef pthread_mutex_t t_mtx;
 
-typedef	struct	s_fork
-{
-	t_mtx			fork;
-	// int				fork_id;
-}					t_fork;
-
 //common command line data
 typedef	struct	s_table
 {
@@ -56,8 +50,8 @@ typedef struct s_philo
 	int				eating;
 	int				meals_eaten;
 	bool			full;
+	bool			*end;
 	size_t			last_meal;
-	int				*dead;
 	t_mtx			*r_fork;
 	t_mtx			*l_fork;
 	t_mtx			*write_lock;	//lock when writing to stdout
@@ -69,10 +63,11 @@ typedef struct s_philo
 // all data united
 typedef struct s_data
 {
-	int				dead_flag;
+	bool			diner_end_flag;	//flagged when philo dies/all philos full in end_monitoring thread
 	t_mtx			dead_lock;
 	t_mtx			meal_lock;
 	t_mtx			write_lock;
+	t_mtx			forks[200];
 	t_philo			*philos;		//data related to given philo[i]
 	t_table			table;			//data related to passed command
 }					t_data;
@@ -91,15 +86,20 @@ void    print_message(char *status, t_philo  *philos, int id);
 int		ft_usleep(size_t milliseconds);
 
 // dead monitoring
-int 	check_if_philo_dead(t_philo *philos);
 int 	philo_starved_to_death(t_data *data);
 int 	philos_finished_diner(t_data *data);
-void 	*end_monitoring(void *pointer); //function of thread
+
+//thread functions
+void	*routine(void *pointer);
+void 	*end_monitoring(void *pointer);
 
 // core functions
 int     parse(int ac, char **av);
 int 	create_threads(t_data *data);
-void	*routine(void *pointer); //function of thread
+int 	check_if_philo_dead(t_philo *philos);
+
+//exiting
+void	join_philo_threads(t_data *data, pthread_t monitoring);
 void	destroy_threads(t_data	*data);
 
 //routine
