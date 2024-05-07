@@ -6,7 +6,7 @@
 /*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:23:48 by lmerveil          #+#    #+#             */
-/*   Updated: 2024/05/06 19:07:44 by lmerveil         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:06:48 by lmerveil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_philo
 {
 	pthread_t		thread;			//a philo is a thread
 	int				id;
-	int				eating;
+	bool			eating;
 	int				meals_eaten;
 	bool			full;
 	bool			*end;
@@ -73,10 +73,10 @@ typedef struct s_data
 }					t_data;
 
 //initiation
-void	init_philos(t_philo *philos, t_data *data, pthread_mutex_t *forks, char **av);
+void	init_philos(t_philo *philos, t_table *table, t_data *data, pthread_mutex_t *forks);
 void    init_forks(pthread_mutex_t *forks, int philo_num);
 void	init_input(t_table *table, char **argv);
-void	init_program(t_table table, t_data *data, t_philo *philos);
+void	init_data(t_table table, t_data *data, t_philo *philos);
 
 // utils
 int     ft_atoi(const char *nptr);

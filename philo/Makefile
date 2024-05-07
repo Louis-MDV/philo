@@ -6,7 +6,7 @@
 #    By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/23 13:23:42 by lmerveil          #+#    #+#              #
-#    Updated: 2024/05/06 19:15:12 by lmerveil         ###   ########.fr        #
+#    Updated: 2024/05/07 13:47:08 by lmerveil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ NC			= 	$(shell tput sgr0)
 
 SRCS		 = 	$(addsuffix .c,				\
 				$(addprefix srcs/, 			\
-					core					\
+					monitoring				\
 					init					\
 					routine					\
 					threads					\

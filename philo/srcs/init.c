@@ -6,7 +6,7 @@
 /*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 21:02:56 by louismdv          #+#    #+#             */
-/*   Updated: 2024/05/06 16:34:51 by lmerveil         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:30:38 by lmerveil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,27 +27,28 @@ void	init_input(t_table *table, char **av)
 }
 
 // Initializing the philosophers individualy in PHILOS struct
-void	init_philos(t_philo *philos, t_data *data, pthread_mutex_t *forks, char **av)
+void	init_philos(t_philo *philos, t_table *table, t_data *data, pthread_mutex_t *forks)
 {
 	int	i;
+	const size_t	current_time = get_current_time();
 
-	i = 1;
-	while (i <= ft_atoi(av[1]))
+	i = 0;
+	while (i < table->num_of_philos)
 	{
-		philos[i].id = i;							//philo number
-		philos[i].eating = 0;						//eating status. 1 if eating
+		philos[i].id = i + 1;						//philo number
+		philos[i].eating = false;					//eating status. 1 if eating
 		philos[i].meals_eaten = 0; 					//eaten meals
-		philos[i].last_meal = get_current_time();	//time ate last meal
+		philos[i].last_meal = current_time;			//time ate last meal
 		philos[i].write_lock = &data->write_lock;	//stdout writing lock
 		philos[i].dead_lock = &data->dead_lock;
 		philos[i].meal_lock = &data->meal_lock;		//philo eating
 		philos[i].end = &data->diner_end_flag;
 		philos[i].l_fork = &forks[i];
 		if (i == 0)
-			philos[i].r_fork = &forks[(data->table.num_of_philos) - 1];
+			philos[i].r_fork = &forks[table->num_of_philos - 1];
 		else
 			philos[i].r_fork = &forks[i - 1];
-		philos[i].table = data->table;
+		philos[i].table = *table;
 		i++;
 	}
 }
@@ -66,12 +67,12 @@ void	init_forks(pthread_mutex_t *forks, int philo_num)
 }
 
 // Initializing the PROGRAM structure
-void	init_program(t_table table, t_data *data, t_philo *philos)
+void	init_data(t_table table, t_data *data, t_philo *philos)
 {
-	data->diner_end_flag = false;		//flag to use in case a philo dies / all philos are full
-	data->philos = philos;			//pointer to the whole philos struct. Enabling access to indiv level data
+	data->diner_end_flag = false;					//flag to use in case a philo dies / all philos are full
+	data->philos = philos;							//pointer to the whole philos struct. Enabling access to indiv level data
 	data->table = table;
-	pthread_mutex_init(&data->write_lock, NULL); //init write mutex
+	pthread_mutex_init(&data->write_lock, NULL);	//init write mutex
 	pthread_mutex_init(&data->dead_lock, NULL);
 	pthread_mutex_init(&data->meal_lock, NULL);
 }

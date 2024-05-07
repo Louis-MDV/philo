@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   core.c                                             :+:      :+:    :+:   */
+/*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 21:02:46 by louismdv          #+#    #+#             */
-/*   Updated: 2024/05/06 16:34:37 by lmerveil         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:26:34 by lmerveil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int philo_starved_to_death(t_data *data)
 {
     int i;
     
-    i = 1;
-    while (i <= data->table.num_of_philos)
+    i = 0;
+    while (i < data->table.num_of_philos)
     {
         pthread_mutex_lock(&data->meal_lock);
         if (get_current_time() - data->philos[i].last_meal >= data->table.time_to_die && !data->philos[i].eating)
@@ -55,8 +55,8 @@ int philos_finished_diner(t_data *data)
 {
     int i;
 
-    i = 1;
-    while (i <= data->table.num_of_philos)
+    i = 0;
+    while (i < data->table.num_of_philos)
     {
 		pthread_mutex_lock(&data->meal_lock);
         if (!data->philos[i].full)
