@@ -6,7 +6,7 @@
 /*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 21:02:46 by louismdv          #+#    #+#             */
-/*   Updated: 2024/05/07 17:26:34 by lmerveil         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:44:42 by lmerveil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int philos_finished_diner(t_data *data)
     {
 		pthread_mutex_lock(&data->meal_lock);
         if (!data->philos[i].full)
-            return (pthread_mutex_unlock(&data->meal_lock), EXIT_SUCCESS);
+            return (pthread_mutex_unlock(&data->meal_lock), EXIT_FAILURE);
         i++;
     }
     return (pthread_mutex_unlock(&data->meal_lock), EXIT_FAILURE);
