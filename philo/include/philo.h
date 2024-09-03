@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:23:48 by lmerveil          #+#    #+#             */
-/*   Updated: 2024/05/07 16:06:48 by lmerveil         ###   ########.fr       */
+/*   Updated: 2024/09/03 18:55:47 by louismdv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ typedef struct s_philo
 	bool			eating;
 	int				meals_eaten;
 	bool			full;
-	bool			*end;
+	bool			*diner_end_flag;
+	
 	size_t			last_meal;
 	t_mtx			*r_fork;
 	t_mtx			*l_fork;
@@ -96,7 +97,6 @@ void 	*end_monitoring(void *pointer);
 // core functions
 int     parse(int ac, char **av);
 int 	create_threads(t_data *data);
-int 	check_if_philo_dead(t_philo *philos);
 
 //exiting
 void	join_philo_threads(t_data *data, pthread_t monitoring);

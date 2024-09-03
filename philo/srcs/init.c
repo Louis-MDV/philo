@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 21:02:56 by louismdv          #+#    #+#             */
-/*   Updated: 2024/08/29 15:29:33 by lmerveil         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:22:14 by louismdv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	init_philos(t_philo *philos, t_table *table, t_data *data, pthread_mutex_t 
 		philos[i].write_lock = &data->write_lock;	//stdout writing lock
 		philos[i].dead_lock = &data->dead_lock;
 		philos[i].meal_lock = &data->meal_lock;		//philo eating
-		philos[i].end = &data->diner_end_flag;
+		philos[i].full = false;
+		philos[i].diner_end_flag = &data->diner_end_flag;
 		philos[i].l_fork = &forks[i];
 		if (i == 0)
 			philos[i].r_fork = &forks[table->num_of_philos - 1];

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 23:20:09 by louismdv          #+#    #+#             */
-/*   Updated: 2024/05/07 17:17:14 by lmerveil         ###   ########.fr       */
+/*   Updated: 2024/09/03 23:17:40 by louismdv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	create_threads(t_data *data)
 	pthread_t	monitoring;
 
 	if (pthread_create(&monitoring, NULL, &end_monitoring, data) != 0)
-		return (destroy_threads(data),printf("pthread create error: monitoring "), EXIT_FAILURE);
+		return (destroy_threads(data), printf("pthread create error: monitoring "), EXIT_FAILURE);
 	i = 0;
 	while (i < data->table.num_of_philos)
 	{
