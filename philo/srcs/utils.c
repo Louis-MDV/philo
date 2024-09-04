@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:45:45 by lmerveil          #+#    #+#             */
-/*   Updated: 2024/09/03 16:56:07 by louismdv         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:43:55 by lmerveil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 void	print_message(char *status, t_philo *philo, int id)
 {
 	size_t	time;
-
-	pthread_mutex_lock(philo->write_lock);
 	time = get_current_time() - philo->table.start_time;
-	// if (check_if_philo_dead(philo) == false)
+	if (status[0] == 'd' && status[1] == 'i' && status[2] == 'e' && status[3] == 'd')
+		ft_usleep(200);
+	pthread_mutex_lock(philo->write_lock);
 	printf("%zu %d %s\n", time, id, status);
 	pthread_mutex_unlock(philo->write_lock);
 }

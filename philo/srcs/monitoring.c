@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 21:02:46 by louismdv          #+#    #+#             */
-/*   Updated: 2024/09/03 23:29:27 by louismdv         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:46:53 by lmerveil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int philo_starved_to_death(t_data *data)
     {
         if(pthread_mutex_lock(&data->meal_lock) != 0)
             return (perror("pthread_mutex_lock failed"), -1);
-        if (get_current_time() - data->philos[i].last_meal >= data->table.time_to_die && !data->philos[i].eating)
+        if (get_current_time() - data->philos[i].last_meal >= data->table.time_to_die)
 		{
 			print_message("died", &data->philos[i], data->philos[i].id);
             if (pthread_mutex_unlock(&data->meal_lock) != 0)
                 return (perror("pthread_mutex_unlock failed"), -1);
-            printf(RED"philo [%d] starved\n", data->philos[i].id);
+            // printf(RED"philo [%d] starved\n", data->philos[i].id);
             return (true);
 		}
         if (pthread_mutex_unlock(&data->meal_lock) != 0)
