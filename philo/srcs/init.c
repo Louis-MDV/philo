@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 21:02:56 by louismdv          #+#    #+#             */
-/*   Updated: 2024/09/04 17:51:28 by lmerveil         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:40:39 by louismdv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 void	init_input(t_table *table, char **av)
 {
 	table->time_to_die = ft_atoi(av[2]);
-	table->time_to_eat = ft_atoi(av[3]);
+	table->time_eat = ft_atoi(av[3]);
 	table->time_to_sleep = ft_atoi(av[4]);
-	table->start_time = get_current_time();			//time started the program
+	table->start_time = get_current_time();
 	table->num_of_philos = ft_atoi(av[1]);
 	if (av[5])
 		table->num_times_to_eat = ft_atoi(av[5]);
@@ -27,21 +27,21 @@ void	init_input(t_table *table, char **av)
 }
 
 // Initializing the philosophers individualy in PHILOS struct
-void	init_philos(t_philo *philos, t_table *table, t_data *data, pthread_mutex_t *forks)
+void	init_philos(t_philo *philos, t_table *table,
+				t_data *data, pthread_mutex_t *forks)
 {
-	int	i;
+	int				i;
 	const size_t	current_time = get_current_time();
 
 	i = 0;
 	while (i < table->num_of_philos)
 	{
-		philos[i].id = i + 1;						//philo number
-		philos[i].eating = false;					//eating status. 1 if eating
-		philos[i].meals_eaten = 0; 					//eaten meals
-		philos[i].last_meal = current_time;			//time ate last meal
-		philos[i].write_lock = &data->write_lock;	//stdout writing lock
+		philos[i].id = i + 1;
+		philos[i].meals_eaten = 0;
+		philos[i].last_meal = current_time;
+		philos[i].write_lock = &data->write_lock;
 		philos[i].dead_lock = &data->dead_lock;
-		philos[i].meal_lock = &data->meal_lock;		//philo eating
+		philos[i].meal_lock = &data->meal_lock;
 		philos[i].full = false;
 		philos[i].diner_end_flag = &data->diner_end_flag;
 		philos[i].l_fork = &forks[i];
@@ -72,27 +72,28 @@ void	init_forks(pthread_mutex_t *forks, int philo_num)
 // Initializing the PROGRAM structure
 void	init_data(t_table table, t_data *data, t_philo *philos)
 {
-	data->diner_end_flag = false;					//flag to use in case a philo dies / all philos are full
-	data->philos = philos;							//pointer to the whole philos struct. Enabling access to indiv level data
+	data->diner_end_flag = false;
+	data->philos = philos;
 	data->table = table;
-	pthread_mutex_init(&data->write_lock, NULL);	//init write mutex
+	pthread_mutex_init(&data->write_lock, NULL);
 	pthread_mutex_init(&data->dead_lock, NULL);
 	pthread_mutex_init(&data->meal_lock, NULL);
 }
 
-int parse(int ac, char **av)
+int	parse(int ac, char **av)
 {
 	if (ac < 5 || ac > 6)
-		return(printf("Wrong num of args!\n"), EXIT_FAILURE);
+		return (printf("Wrong num of args!\n"), EXIT_FAILURE);
 	if (ft_atoi(av[1]) == -1 || ft_atoi(av[1]) > 200 || ft_atoi(av[1]) < 1)
-		return(printf(RED"Num of philosophers invalid!\n"RESET), EXIT_FAILURE);
+		return (printf(RED"Num of philosophers invalid!\n"RESET), EXIT_FAILURE);
 	if (ft_atoi(av[2]) == -1 || ft_atoi(av[2]) <= 0)
-		return(printf(RED"Time to die invalid!\n"RESET), EXIT_FAILURE);
+		return (printf(RED"Time to die invalid!\n"RESET), EXIT_FAILURE);
 	if (ft_atoi(av[3]) == -1 || ft_atoi(av[3]) <= 0)
-		return(printf(RED"Time to eat invalid!\n"RESET), EXIT_FAILURE);
+		return (printf(RED"Time to eat invalid!\n"RESET), EXIT_FAILURE);
 	if (ft_atoi(av[4]) == -1 || ft_atoi(av[4]) <= 0)
-		return(printf(RED"Time to sleep invalid!\n"RESET), EXIT_FAILURE);
+		return (printf(RED"Time to sleep invalid!\n"RESET), EXIT_FAILURE);
 	if (ac == 6 && ft_atoi(av[5]) <= 0)
-		return(printf(RED"Num of times philos must eat invalid!\n"RESET), EXIT_FAILURE);
-	return(EXIT_SUCCESS);
+		return (printf(RED"Num of times philos must eat invalid!\n"RESET),
+			EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

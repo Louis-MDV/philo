@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:45:45 by lmerveil          #+#    #+#             */
-/*   Updated: 2024/09/04 17:43:55 by lmerveil         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:44:58 by louismdv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 void	print_message(char *status, t_philo *philo, int id)
 {
 	size_t	time;
+
 	time = get_current_time() - philo->table.start_time;
-	if (status[0] == 'd' && status[1] == 'i' && status[2] == 'e' && status[3] == 'd')
+	if (status[0] == 'd' && status[1] == 'i' && status[2] == 'e'
+		&& status[3] == 'd')
 		ft_usleep(200);
 	pthread_mutex_lock(philo->write_lock);
 	printf("%zu %d %s\n", time, id, status);
@@ -72,7 +74,8 @@ int	ft_usleep(size_t milliseconds)
 // returns current time of day in milliseconds
 size_t	get_current_time(void)
 {
-	struct timeval tp; // tp = timepointer
+	struct timeval	tp;
+
 	if (gettimeofday(&tp, NULL) == -1)
 		write(2, "gettimeofday() error\n", 22);
 	return ((tp.tv_sec * 1000) + (tp.tv_usec / 1000));

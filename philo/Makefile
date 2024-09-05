@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+         #
+#    By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/23 13:23:42 by lmerveil          #+#    #+#              #
-#    Updated: 2024/05/07 13:47:08 by lmerveil         ###   ########.fr        #
+#    Updated: 2024/09/05 13:45:14 by louismdv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS		 = 	$(addsuffix .c,				\
 					routine					\
 					threads					\
 					utils					\
+					utils2					\
 				)							\
 					main					\
 				)							\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:23:48 by lmerveil          #+#    #+#             */
-/*   Updated: 2024/09/04 16:40:06 by lmerveil         ###   ########.fr       */
+/*   Updated: 2024/09/05 13:45:38 by louismdv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef pthread_mutex_t	t_mtx;
 typedef struct s_table
 {
 	size_t				time_to_die;
-	size_t				time_to_eat;
+	size_t				time_eat;
 	size_t				time_to_sleep;
 	size_t				start_time;
 	int					num_of_philos;
@@ -45,7 +45,7 @@ typedef struct s_table
 // philo individual data
 typedef struct s_philo
 {
-	pthread_t thread; // a philo is a thread
+	pthread_t			thread;				// a philo is a thread
 	int					id;
 	bool				eating;
 	int					meals_eaten;
@@ -55,23 +55,22 @@ typedef struct s_philo
 	size_t				last_meal;
 	t_mtx				*r_fork;
 	t_mtx				*l_fork;
-	t_mtx *write_lock; // lock when writing to stdout
-	t_mtx *dead_lock;  // lock when changing the death flag
-	t_mtx *meal_lock;  // lock when eating
+	t_mtx				*write_lock;		// lock when writing to stdout
+	t_mtx				*dead_lock;			// lock when changing the death flag
+	t_mtx				*meal_lock;			// lock when eating
 	t_table				table;
 }						t_philo;
 
 // all data united
 typedef struct s_data
 {
-	bool diner_end_flag;
-		// flagged when philo dies/all philos full in end_monitoring thread
+	bool				diner_end_flag;
 	t_mtx				dead_lock;
 	t_mtx				meal_lock;
 	t_mtx				write_lock;
 	t_mtx				forks[200];
-	t_philo *philos; // data related to given philo[i]
-	t_table table;   // data related to passed command
+	t_philo				*philos;			// data related to given philo[i]
+	t_table				table;				// data related to passed command
 }						t_data;
 
 // initiation
@@ -88,6 +87,8 @@ size_t					get_current_time(void);
 void					print_message(char *status, t_philo *philos, int id);
 int						ft_usleep(size_t milliseconds);
 int						diner_finished(t_philo *philo);
+void					solo_philo(t_philo *philo);
+void					lock_mutex(t_mtx *mutex1, t_mtx *mutex2, t_mtx *mutex3);
 
 // dead monitoring
 int						philo_starved_to_death(t_data *data);
@@ -107,7 +108,7 @@ void					destroy_threads(t_data *data);
 
 // routine
 void					think(t_philo *philo);
-void	dream(t_philo *philo); // sleep already taken
+void					dream(t_philo *philo);	// sleep already taken
 void					eat(t_philo *philo);
 
 #endif // PHILO_H
