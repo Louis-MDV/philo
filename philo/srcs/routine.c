@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: louismdv <louismdv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmerveil <lmerveil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 21:59:29 by louismdv          #+#    #+#             */
-/*   Updated: 2024/09/05 13:44:26 by louismdv         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:53:41 by lmerveil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	*routine(void *pointer)
 	while (diner_finished(philo) == false)
 	{
 		eat(philo);
-		if (diner_finished(philo) == true)
+		if (diner_finished(philo))
 			break ;
 		dream(philo);
-		if (diner_finished(philo) == true)
+		if (diner_finished(philo))
 			break ;
 		think(philo);
-		if (diner_finished(philo) == true)
+		if (diner_finished(philo))
 			break ;
 	}
 	return (pointer);
@@ -37,21 +37,21 @@ void	*routine(void *pointer)
 void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->l_fork);
-	if (diner_finished(philo))
+	if (diner_finished(philo) == true)
 		return ((void)pthread_mutex_unlock(philo->l_fork));
-	print_message("has taken left fork", philo, philo->id);
+	print_message("has taken a fork", philo, philo->id);
 	if (philo->r_fork == NULL)
 		return ((void)solo_philo(philo));
 	pthread_mutex_lock(philo->r_fork);
-	if (diner_finished(philo))
+	if (diner_finished(philo) == true)
 		return (lock_mutex(philo->l_fork, philo->r_fork, NULL));
-	print_message("has taken right fork", philo, philo->id);
+	print_message("has taken a fork", philo, philo->id);
 	pthread_mutex_lock(philo->meal_lock);
-	if (diner_finished(philo))
+	if (diner_finished(philo) == true)
 		return (lock_mutex(philo->l_fork, philo->r_fork, philo->meal_lock));
 	print_message("is eating", philo, philo->id);
 	philo->last_meal = get_current_time();
-	if (diner_finished(philo))
+	if (diner_finished(philo) == true)
 		return (lock_mutex(philo->l_fork, philo->r_fork, philo->meal_lock));
 	philo->meals_eaten++;
 	if (philo->meals_eaten == philo->table.num_times_to_eat && !(philo->full))
